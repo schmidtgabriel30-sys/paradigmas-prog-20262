@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\ClassroomController;
+use App\Http\Controllers\Api\ClassroomUserController;
+use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +22,11 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Equivale a isso
+    // Rotas existentes
     Route::apiResource('/users', UserController::class);
     Route::apiResource('/classrooms', ClassroomController::class);
+
+    // Novas rotas do trabalho (Cursos e Vínculo N-M de Turmas)
+    Route::apiResource('/courses', CourseController::class);
+    Route::post('/classrooms/enrollment', [ClassroomUserController::class, 'toggleEnrollment']);
 });
